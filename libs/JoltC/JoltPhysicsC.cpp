@@ -32,6 +32,7 @@
 #include <Jolt/Physics/Collision/RayCast.h>
 #include <Jolt/Physics/Constraints/FixedConstraint.h>
 #include <Jolt/Physics/Constraints/HingeConstraint.h>
+#include <Jolt/Physics/Constraints/SixDOFConstraint.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <Jolt/Physics/Body/BodyLock.h>
@@ -306,6 +307,16 @@ FN(toJph)(JPC_HingeConstraintSettings *in) {
     return reinterpret_cast<JPH::HingeConstraintSettings *>(in);
 }
 FN(toJpc)(JPH::HingeConstraintSettings *in) { assert(in); return reinterpret_cast<JPC_HingeConstraintSettings *>(in); }
+
+FN(toJph)(const JPC_SixDOFConstraintSettings *in) {
+    ENSURE_TYPE(in, JPH::SixDOFConstraintSettings);
+    return reinterpret_cast<const JPH::SixDOFConstraintSettings *>(in);
+}
+FN(toJph)(JPC_SixDOFConstraintSettings *in) {
+    ENSURE_TYPE(in, JPH::SixDOFConstraintSettings);
+    return reinterpret_cast<JPH::SixDOFConstraintSettings *>(in);
+}
+FN(toJpc)(JPH::SixDOFConstraintSettings *in) { assert(in); return reinterpret_cast<JPC_SixDOFConstraintSettings *>(in); }
 
 FN(toJph)(const JPC_CollisionGroup *in) { assert(in); return reinterpret_cast<const JPH::CollisionGroup *>(in); }
 FN(toJpc)(const JPH::CollisionGroup *in) { assert(in); return reinterpret_cast<const JPC_CollisionGroup *>(in); }
@@ -2308,6 +2319,18 @@ JPC_API JPC_HingeConstraintSettings *
 JPC_HingeConstraintSettings_Create()
 {
     auto settings = new JPH::HingeConstraintSettings();
+    settings->AddRef();
+    return toJpc(settings);
+}
+//--------------------------------------------------------------------------------------------------
+//
+// JPC_SixDOFConstraintSettings (-> JPC_TwoBodyConstraintSettings -> JPC_ConstraintSettings)
+//
+//--------------------------------------------------------------------------------------------------
+JPC_API JPC_SixDOFConstraintSettings *
+JPC_SixDOFConstraintSettings_Create()
+{
+    auto settings = new JPH::SixDOFConstraintSettings();
     settings->AddRef();
     return toJpc(settings);
 }

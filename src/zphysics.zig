@@ -3710,6 +3710,25 @@ pub const HingeConstraintSettings = opaque {
 };
 //--------------------------------------------------------------------------------------------------
 //
+// SixDOFConstraintSettings (-> TwoBodyConstraintSettings -> ConstraintSettings)
+//
+//--------------------------------------------------------------------------------------------------
+pub const SixDOFConstraintSettings = opaque {
+    pub fn asConstraintSettings(self: *SixDOFConstraintSettings) *ConstraintSettings {
+        return @ptrCast(self);
+    }
+
+    pub fn asTwoBodyConstraintSettings(self: *SixDOFConstraintSettings) *TwoBodyConstraintSettings {
+        return @ptrCast(self);
+    }
+
+    pub fn create() !*SixDOFConstraintSettings {
+        return @ptrCast(c.JPC_SixDOFConstraintSettings_Create() orelse
+            return error.FailedToCreateSixDOFConstraintSettings);
+    }
+};
+//--------------------------------------------------------------------------------------------------
+//
 // Constraint
 //
 //--------------------------------------------------------------------------------------------------

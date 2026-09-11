@@ -352,7 +352,8 @@ typedef struct JPC_CharacterContactSettings    JPC_CharacterContactSettings;
 typedef struct JPC_ConstraintSettings           JPC_ConstraintSettings;
 typedef struct JPC_TwoBodyConstraintSettings    JPC_TwoBodyConstraintSettings;
 typedef struct JPC_FixedConstraintSettings      JPC_FixedConstraintSettings;
-typedef struct JPC_HingeConstraintSettings   JPC_HingeConstraintSettings;
+typedef struct JPC_HingeConstraintSettings      JPC_HingeConstraintSettings;
+typedef struct JPC_SixDOFConstraintSettings     JPC_SixDOFConstraintSettings;
 
 typedef struct JPC_PhysicsSystem JPC_PhysicsSystem;
 typedef struct JPC_SharedMutex   JPC_SharedMutex;
@@ -1994,6 +1995,13 @@ JPC_FixedConstraintSettings_SetAutoDetectPoint(JPC_FixedConstraintSettings *in_s
 //--------------------------------------------------------------------------------------------------
 JPC_API JPC_HingeConstraintSettings *
 JPC_HingeConstraintSettings_Create();
+//--------------------------------------------------------------------------------------------------
+//
+// JPC_SixDOFConstraintSettings (-> JPC_TwoBodyConstraintSettings -> JPC_ConstraintSettings)
+//
+//--------------------------------------------------------------------------------------------------
+JPC_API JPC_SixDOFConstraintSettings *
+JPC_SixDOFConstraintSettings_Create();
 //--------------------------------------------------------------------------------------------------
 //
 // JPC_Constraint
