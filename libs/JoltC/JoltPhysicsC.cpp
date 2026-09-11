@@ -31,6 +31,7 @@
 #include <Jolt/Physics/Collision/PhysicsMaterial.h>
 #include <Jolt/Physics/Collision/RayCast.h>
 #include <Jolt/Physics/Constraints/FixedConstraint.h>
+#include <Jolt/Physics/Constraints/HingeConstraint.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <Jolt/Physics/Body/BodyLock.h>
@@ -295,6 +296,16 @@ FN(toJph)(JPC_FixedConstraintSettings *in) {
     return reinterpret_cast<JPH::FixedConstraintSettings *>(in);
 }
 FN(toJpc)(JPH::FixedConstraintSettings *in) { assert(in); return reinterpret_cast<JPC_FixedConstraintSettings *>(in); }
+
+FN(toJph)(const JPC_HingeConstraintSettings *in) {
+    ENSURE_TYPE(in, JPH::HingeConstraintSettings);
+    return reinterpret_cast<const JPH::HingeConstraintSettings *>(in);
+}
+FN(toJph)(JPC_HingeConstraintSettings *in) {
+    ENSURE_TYPE(in, JPH::HingeConstraintSettings);
+    return reinterpret_cast<JPH::HingeConstraintSettings *>(in);
+}
+FN(toJpc)(JPH::HingeConstraintSettings *in) { assert(in); return reinterpret_cast<JPC_HingeConstraintSettings *>(in); }
 
 FN(toJph)(const JPC_CollisionGroup *in) { assert(in); return reinterpret_cast<const JPH::CollisionGroup *>(in); }
 FN(toJpc)(const JPH::CollisionGroup *in) { assert(in); return reinterpret_cast<const JPC_CollisionGroup *>(in); }
@@ -2287,6 +2298,18 @@ JPC_API void
 JPC_FixedConstraintSettings_SetAutoDetectPoint(JPC_FixedConstraintSettings *in_settings, bool in_enabled)
 {
     toJph(in_settings)->mAutoDetectPoint = in_enabled;
+}
+//--------------------------------------------------------------------------------------------------
+//
+// JPC_HingeConstraintSettings (-> JPC_TwoBodyConstraintSettings -> JPC_ConstraintSettings)
+//
+//--------------------------------------------------------------------------------------------------
+JPC_API JPC_HingeConstraintSettings *
+JPC_HingeConstraintSettings_Create()
+{
+    auto settings = new JPH::HingeConstraintSettings();
+    settings->AddRef();
+    return toJpc(settings);
 }
 //--------------------------------------------------------------------------------------------------
 //

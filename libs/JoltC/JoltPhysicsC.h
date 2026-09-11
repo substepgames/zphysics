@@ -349,9 +349,10 @@ typedef struct JPC_DecoratedShapeSettings      JPC_DecoratedShapeSettings;
 typedef struct JPC_CompoundShapeSettings       JPC_CompoundShapeSettings;
 typedef struct JPC_CharacterContactSettings    JPC_CharacterContactSettings;
 
-typedef struct JPC_ConstraintSettings        JPC_ConstraintSettings;
-typedef struct JPC_TwoBodyConstraintSettings JPC_TwoBodyConstraintSettings;
-typedef struct JPC_FixedConstraintSettings   JPC_FixedConstraintSettings;
+typedef struct JPC_ConstraintSettings           JPC_ConstraintSettings;
+typedef struct JPC_TwoBodyConstraintSettings    JPC_TwoBodyConstraintSettings;
+typedef struct JPC_FixedConstraintSettings      JPC_FixedConstraintSettings;
+typedef struct JPC_HingeConstraintSettings   JPC_HingeConstraintSettings;
 
 typedef struct JPC_PhysicsSystem JPC_PhysicsSystem;
 typedef struct JPC_SharedMutex   JPC_SharedMutex;
@@ -1986,6 +1987,13 @@ JPC_FixedConstraintSettings_SetSpace(JPC_FixedConstraintSettings *in_settings, J
 
 JPC_API void
 JPC_FixedConstraintSettings_SetAutoDetectPoint(JPC_FixedConstraintSettings *in_settings, bool in_enabled);
+//--------------------------------------------------------------------------------------------------
+//
+// JPC_HingeConstraintSettings (-> JPC_TwoBodyConstraintSettings -> JPC_ConstraintSettings)
+//
+//--------------------------------------------------------------------------------------------------
+JPC_API JPC_HingeConstraintSettings *
+JPC_HingeConstraintSettings_Create();
 //--------------------------------------------------------------------------------------------------
 //
 // JPC_Constraint

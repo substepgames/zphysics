@@ -3691,6 +3691,25 @@ pub const FixedConstraintSettings = opaque {
 };
 //--------------------------------------------------------------------------------------------------
 //
+// HingeConstraintSettings (-> TwoBodyConstraintSettings -> ConstraintSettings)
+//
+//--------------------------------------------------------------------------------------------------
+pub const HingeConstraintSettings = opaque {
+    pub fn asConstraintSettings(self: *HingeConstraintSettings) *ConstraintSettings {
+        return @ptrCast(self);
+    }
+
+    pub fn asTwoBodyConstraintSettings(self: *HingeConstraintSettings) *TwoBodyConstraintSettings {
+        return @ptrCast(self);
+    }
+
+    pub fn create() !*HingeConstraintSettings {
+        return @ptrCast(c.JPC_HingeConstraintSettings_Create() orelse
+            return error.FailedToCreateHingeConstraintSettings);
+    }
+};
+//--------------------------------------------------------------------------------------------------
+//
 // Constraint
 //
 //--------------------------------------------------------------------------------------------------
