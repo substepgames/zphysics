@@ -1,10 +1,10 @@
 const std = @import("std");
 
 fn addMacros(module: *std.Build.Module, options: anytype) void {
+    module.addCMacro("JPH_DEBUG_RENDERER", "");
+
     if (options.enable_cross_platform_determinism)
         module.addCMacro("JPH_CROSS_PLATFORM_DETERMINISTIC", "");
-    if (options.enable_debug_renderer)
-        module.addCMacro("JPH_DEBUG_RENDERER", "");
     if (options.use_double_precision)
         module.addCMacro("JPH_DOUBLE_PRECISION", "");
     if (options.enable_asserts)
@@ -47,12 +47,6 @@ pub fn build(b: *std.Build) void {
             "Disable C++ Exceptions",
         ) orelse true,
     };
-
-    const user_extensions = b.option(
-        []const std.Build.LazyPath,
-        "user_extensions",
-        "List of user source files to add to the joltc library",
-    ) orelse &.{};
 
     const options_step = b.addOptions();
     inline for (std.meta.fields(@TypeOf(options))) |field| {
@@ -103,8 +97,7 @@ pub fn build(b: *std.Build) void {
     addMacros(joltc.root_module, options);
     joltc.root_module.addCSourceFiles(.{
         .files = &.{
-            "libs/JoltC/JoltPhysicsC.cpp",
-            "libs/JoltC/JoltPhysicsC_Extensions.cpp",
+            "libs/JoltC/JoltCImpl/JoltC.cpp",
             src_dir ++ "/AABBTree/AABBTreeBuilder.cpp",
             src_dir ++ "/Core/Color.cpp",
             src_dir ++ "/Core/Factory.cpp",
@@ -241,45 +234,4 @@ pub fn build(b: *std.Build) void {
         },
         .flags = c_flags,
     });
-
-    for (user_extensions) |user_extension| {
-        joltc.root_module.addCSourceFile(.{
-            .file = user_extension,
-            .flags = c_flags,
-        });
-    }
-
-    const test_step = b.step("test", "Run zphysics tests");
-
-    const tests = b.addTest(.{
-        .name = "zphysics-tests",
-        .root_module = b.createModule(.{
-            .root_source_file = b.path("src/zphysics.zig"),
-            .target = target,
-            .optimize = optimize,
-        }),
-    });
-    b.installArtifact(tests);
-
-    // TODO: Problems with LTO on Windows.
-    if (target.result.os.tag == .windows) {
-        tests.lto = .none;
-    }
-
-    addMacros(tests.root_module, options);
-    tests.root_module.addCSourceFile(.{
-        .file = b.path("libs/JoltC/JoltPhysicsC_Tests.c"),
-        .flags = &.{
-            "-fno-sanitize=undefined",
-        },
-    });
-
-    if (b.option(bool, "verbose", "Print verbose test debug output to stderr") orelse false)
-        tests.root_module.addCMacro("PRINT_OUTPUT", "");
-
-    tests.root_module.addImport("zphysics_options", options_module);
-    tests.root_module.addIncludePath(b.path("libs/JoltC"));
-    tests.root_module.linkLibrary(joltc);
-
-    test_step.dependOn(&b.addRunArtifact(tests).step);
 }

@@ -1,3 +1,6 @@
 [submodule "libs/Jolt"]
 	path = libs/Jolt
 	url = https://github.com/jrouwe/JoltPhysics
+[submodule "libs/JoltC"]
+	path = libs/JoltC
+	url = https://github.com/SecondHalfGames/JoltC
