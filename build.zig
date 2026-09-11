@@ -83,7 +83,7 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(joltc);
 
-    joltc.root_module.addIncludePath(b.path("libs"));
+    joltc.root_module.addIncludePath(b.path("libs/Jolt"));
     joltc.root_module.addIncludePath(b.path("libs/JoltC"));
     joltc.root_module.link_libc = true;
     if (target.result.abi != .msvc) {
@@ -92,7 +92,7 @@ pub fn build(b: *std.Build) void {
         joltc.root_module.linkSystemLibrary("advapi32", .{});
     }
 
-    const src_dir = "libs/Jolt";
+    const src_dir = "libs/Jolt/Jolt";
     const c_flags = &.{
         "-std=c++17",
         if (options.no_exceptions) "-fno-exceptions" else "",

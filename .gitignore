@@ -4,3 +4,4 @@ zig-out
 
 # Ignore some special OS files
 *.DS_Store
+.ccls-cache
